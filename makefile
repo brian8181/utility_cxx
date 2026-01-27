@@ -43,10 +43,16 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
+SOURCES=$(SRC)/$(APP).cpp $(SRC)/main.cpp $(SRC)/fileio.cpp $(SRC)/utest.cpp $(SRC)/logger.cpp $(SRC)/singleton.cpp
+
 all: $(BLD)/utility_cxx $(BLD)/libutility_cxx.so $(BLD)/libutility_cxx.a
 
-$(BLD)/utility_cxx: $(OBJ)/main.o $(OBJ)/utility_cxx.o
-	 $(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/utility_cxx.o -o $(BLD)/utility_cxx
+$(BLD)/utility_cxx: $(SOURCES)
+	 $(CXX) $(CXXFLAGS) $^ -o $@
+
+# $(BLD)/utility_cxx: $(OBJ)/main.o $(OBJ)/utility_cxx.o
+# 	 $(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/utility_cxx.o -o $(BLD)/utility_cxx
+
 $(BLD)/libutility_cxx.so: $(OBJ)/main.o $(BLD)/utility_cxx.o
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) --shared $(OBJ)/main.o $(BLD)/utility_cxx.o -o $(BLD)/libutility_cxx.so
 	-chmod 755 $(BLD)/libutility_cxx.so
@@ -61,7 +67,6 @@ $(OBJ)/utility_cxx.o: $(SRC)/utility_cxx.cpp
 $(BLD)/utility_cxx_test: $(SRC)/utility_cxx_test.cpp
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
-# rules <?= "\nTEST\n ?>
 # copy header to build dir
 $(BLD)/%.hpp: $(SRC)/%.hpp
 	-cp $^ $@
@@ -69,7 +74,6 @@ $(BLD)/%.hpp: $(SRC)/%.hpp
 $(OBJ)/%.o: ./$(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-#
 .PHONY: all clean install unintsall rebuild help
 
 rebuild: clean all
@@ -91,7 +95,8 @@ help:
 	@echo
 	@echo  '   -Make Targets ...'
 	@echo
-	@echo  '*        all                                     - build all'
-	@echo  '*        $(BLD)/utility_cxx:         - re/build utility_cxx'
-	@echo  '*        $(BLD)/utility_cxx_utest:   - re/build utility_cxx_utest, unit testing'
-	@echo  '*        clean                                   - remove most generated files but keep the config'
+	@echo  '        * all                         - build all'
+	@echo  '        * $(BLD)/utility_cxx:          - re/build utility_cxx'
+	@echo  '        * $(BLD)/utility_cxx_utest:    - re/build utility_cxx_utest, unit testing'
+	@echo  '        * clean                       - remove most generated files but keep the config'
+	@echo

@@ -1,45 +1,87 @@
-
-# @name     utility_cxx
-# @file:    CMakeLists.txt
-# @date:    Mon, 26 Jan 2026 20:02:33 +0000
-# @version: 0.0.1
+# File Name:  CMakeLists.txt
+# Build Date: Sat, Nov 29, 2025  1:20:21 AM
+# Version:    0.1.1
 
 cmake_minimum_required(VERSION 3.28.3)
-project(scanner)
+# We don't use the C++ compiler, so don't let project()
+# test for it in case the platform doesn't have one
+project(utility_cxx VERSION 0.1.0
+                DESCRIPTION "c++ utilities"
+                LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-#set(BUILD_SHARED_LIBS YES)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # Enable C++11 for GNU compilers
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "CYGWIN")
     message(STATUS "Building under Cygwin, defining CYGWIN macro")
     add_definitions(-DCYGWIN)
 endif()
 
-add_executable(utility_cxx
-    src/utility_cxx.cpp
-    src/main.cpp
+# Find Bison package
+# find_package(BISON REQUIRED)
+# if(NOT BISON_FOUND)
+#     message(FATAL_ERROR "Bison not found")
+# endif()
+
+# Now you can use BISON_TARGET
+# BISON_TARGET(parser parser.y ${CMAKE_CURRENT_BINARY_DIR}/parser.tab.cpp
+#              DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/parser.tab.h)
+
+# Rest of your original code
+#find_package(FLEX)
+#FLEX_TARGET(MyScanner lex.l ${CMAKE_CURRENT_BINARY_DIR}/lex.yy.c)
+
+# Find required packages
+find_package(fmt REQUIRED)
+
+if(NOT fmt_FOUND)
+    message(FATAL_ERROR "fmt not found")
+endif()
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(CPPUNIT REQUIRED cppunit)
+
+if(NOT CPPUNIT_FOUND)
+    message(FATAL_ERROR "CPPUnit not found")
+endif()
+
+# Include directories
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
+# Add source files
+set(LIB_SOURCES
+    src/fileio.cpp
+    src/utest.cpp
+    src/logger.cpp
+    src/singleton.cpp
+)
+
+# Add source files
+set(SOURCES
+    src/${PROJECT_NAME}.cpp
+    ${LIB_SOURCES}
 )
 
 
-add_library(utility_cxx_a STATIC
-    src/utility_cxx.cpp
+# Create library from sources
+add_library(${PROJECT_NAME} ${LIB_SOURCES})
 
-)
+# test exe
+add_executable(utility ${SOURCES})
 
-#[=[
-    # Add Library
-    add_library(targetName [STATIC | SHARED | MODULE]
-    [EXCLUDE_FROM_ALL]
-    source1 [source2 ...]
-)
-]=]`
+# Enable testing
+enable_testing()
 
-#[=[
-install(TARGETS MyApp AlgoRuntime AlgoSDK
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-)
-]=]
+# Add tests subdirectory
+#add_subdirectory(tests)
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(CPPUNIT REQUIRED cppunit)
+
+if(NOT CPPUNIT_FOUND)
+    message(FATAL_ERROR "CPPUnit not found")
+endif()
