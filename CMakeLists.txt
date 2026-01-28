@@ -58,6 +58,7 @@ set(LIB_SOURCES
     src/utest.cpp
     src/logger.cpp
     src/singleton.cpp
+    src/utility.cpp
 )
 
 # Add source files

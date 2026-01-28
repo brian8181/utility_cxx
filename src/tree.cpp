@@ -49,13 +49,13 @@ class Tree {
     }
 };
 
-int main(int argc, char *argv[]) {
-  Tree tree;
-  string directory = argc == 1 ? "." : argv[1];
+// int main(int argc, char *argv[]) {
+//   Tree tree;
+//   string directory = argc == 1 ? "." : argv[1];
 
-  cout << directory << endl;
-  tree.walk(directory, "");
-  tree.summary();
+//   cout << directory << endl;
+//   tree.walk(directory, "");
+//   tree.summary();
 
-  return 0;
-}
+//   return 0;
+// }

@@ -43,7 +43,8 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-SOURCES=$(SRC)/$(APP).cpp $(SRC)/main.cpp $(SRC)/fileio.cpp $(SRC)/utest.cpp $(SRC)/logger.cpp $(SRC)/singleton.cpp
+LIB_SOURCES=$(SRC)/fileio.cpp $(SRC)/utest.cpp $(SRC)/logger.cpp $(SRC)/singleton.cpp
+SOURCES=$(SRC)/$(APP).cpp $(SRC)/main.cpp $(LIB_SOURCES)
 
 all: $(BLD)/utility_cxx $(BLD)/libutility_cxx.so $(BLD)/libutility_cxx.a
 
@@ -53,13 +54,13 @@ $(BLD)/utility_cxx: $(SOURCES)
 # $(BLD)/utility_cxx: $(OBJ)/main.o $(OBJ)/utility_cxx.o
 # 	 $(CXX) $(CXXFLAGS) $(OBJ)/main.o $(OBJ)/utility_cxx.o -o $(BLD)/utility_cxx
 
-$(BLD)/libutility_cxx.so: $(OBJ)/main.o $(BLD)/utility_cxx.o
-	$(CXX) $(CXXFLAGS) $(CXXEXTRA) --shared $(OBJ)/main.o $(BLD)/utility_cxx.o -o $(BLD)/libutility_cxx.so
-	-chmod 755 $(BLD)/libutility_cxx.so
+$(BLD)/libutility_cxx.so: $(LIB_SOURCES)
+	$(CXX) $(CXXFLAGS) $(CXXEXTRA) --shared $^ -o $@
+	-chmod 755 $@
 
-$(BLD)/libutility_cxx.a: $(OBJ)/main.o $(BLD)/utility_cxx.o
-	-ar rvs $(BLD)/libutility_cxx.a $(OBJ)/main.o $(BLD)/utility_cxx.o
-	-chmod 755 $(BLD)/libutility_cxx.a
+$(BLD)/libutility_cxx.a: $(LIB_SOURCES)
+	-ar rvs $(BLD)/libutility_cxx.a $^
+	-chmod 755 $@
 
 $(OBJ)/utility_cxx.o: $(SRC)/utility_cxx.cpp
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -c $(SRC)/utility_cxx.cpp -o $(OBJ)/utility_cxx.o
