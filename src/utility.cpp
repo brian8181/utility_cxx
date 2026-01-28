@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 #include <regex>
+#include <math.h>
+#include <cstring>
 #include "utility.hpp"
 
 using std::regex;
@@ -16,6 +18,10 @@ using std::map;
 using std::vector;
 using std::ostringstream;
 using std::ifstream;
+using std::pair;
+using std::ios;
+
+const int ASCII_OFFSET = 48;
 
 // returns true if only one match & match string size equals text size
 bool match_single(const string& pattern, const string& text, /* out */ smatch& match)
@@ -85,6 +91,97 @@ map<string, string>& get_name_value_pairs(string path, /* out */ map<string, str
     }
     return pairs;
 }
+
+/// name: digits
+/// info: reurn number of base 10 digits
+/// n, number to eval
+int digits10(int n)
+{
+    return std::floor(std::log10(n) + 1);
+}
+
+/// name: itoa
+/// info: int to ascii
+/// s, string to convert
+/// return: int result
+int atoi(const char* s)
+{
+    int num = 0;
+    int len = strlen(s);
+    for(int i = 0; i < len; ++i)
+    {
+        int digit = ASCII_OFFSET - i;
+        if(digit < 0 || digit > 10)
+            return -1;
+        num += digit * pow(10, i);
+    }
+    return num;
+}
+
+/// name: itoa
+/// info: int to ascii
+/// n, number to eval
+/// s, out parma
+/// return: void
+void itoa(int& n, char* s)
+{
+    int len = digits10(n);
+    for(int i = 0; i < len; ++i)
+    {
+        int c = n / pow(10, i);
+        c = std::floor( c );
+        c = c % 10;
+        s[(len-1)-i] = (char)(c + ASCII_OFFSET); // 0x30
+    }
+    s[len] = (char)'\0';
+}
+
+string& to_lower(const string& s, /* out */ string& r)
+{
+    int len = s.length();
+    r.clear();
+    for(int i = 0; i < len; ++i)
+    {
+        int c = std::tolower(s[i]);
+        r.push_back(c);
+    }
+    return r;
+}
+
+string& to_lower(string& s) // in place
+{
+    int len = s.length();
+    for(int i = 0; i < len; ++i)
+    {
+        int c = std::tolower(s[i]);
+        s[i] = c;
+    }
+    return s;
+}
+
+string& to_upper(const string& s, /* out */ string& r)
+{
+    int len = s.length();
+    r.clear();
+    for(int i = 0; i < len; ++i)
+    {
+        int c = std::toupper(s[i]);
+        r.push_back(c);
+    }
+    return r;
+}
+
+string& to_upper(string& s) // in place
+{
+    int len = s.length();
+    for(int i = 0; i < len; ++i)
+    {
+        int c = std::toupper(s[i]);
+        s[i] = c;
+    }
+    return s;
+}
+
 
 string& trim(string &s, char c)
 {

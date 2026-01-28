@@ -43,7 +43,7 @@ else
 	LDFLAGS += -lfmt -lcppunit
 endif
 
-LIB_SOURCES=$(SRC)/fileio.cpp $(SRC)/utest.cpp $(SRC)/logger.cpp $(SRC)/singleton.cpp
+LIB_SOURCES=$(SRC)/fileio.cpp $(SRC)/utest.cpp $(SRC)/logger.cpp $(SRC)/singleton.cpp $(SRC)/utility.cpp
 SOURCES=$(SRC)/$(APP).cpp $(SRC)/main.cpp $(LIB_SOURCES)
 
 all: $(BLD)/utility_cxx $(BLD)/libutility_cxx.so $(BLD)/libutility_cxx.a
