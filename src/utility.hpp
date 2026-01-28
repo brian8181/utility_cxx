@@ -9,6 +9,9 @@
 #include <vector>
 #include <map>
 #include <regex>
+#include <stdio.h>
+#include <regex.h>
+
 
 using std::string;
 using std::map;
@@ -17,8 +20,15 @@ using std::smatch;
 
 std::map<string, string>& get_config(const string& path, /* out */ map<string, string>& config);
 
+// c style regex
+int regex_match(char * pattern, char* search, size_t n, regmatch_t* pmatch);
+size_t regex_error(int errcode, const regex_t *preg, char *errbuf, size_t errbuf_size);
+void regex_free(regex_t* preg);
+
+// cpp regex
 bool match_single(const string& pattern, const string& text, /* out */ smatch& match);
 bool match_single(const string& pattern, const string& text);
+
 int read_bits(const smatch& m);
 bool file_exist2(const string& path);
 map<string, string>& get_name_value_pairs(string path, /* out */ map<string, string>& pairs);
@@ -26,6 +36,8 @@ map<string, string>& get_name_value_pairs(string path, /* out */ map<string, str
 int digits10(int n);
 int atoi(const char* s);
 void itoa(int& n, char* s);
+
+# strings
 string& to_lower(const string& s, /* out */ string& r);
 string& to_lower(string& s); // in place
 string& to_upper(const string& s, /* out */ string& r);

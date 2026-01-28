@@ -13,6 +13,7 @@ int regex_match(char * pattern, char* search, size_t n, regmatch_t* pmatch)
         return regexec( &reegex, search, n, pmatch, 0);
     }
 }
+
 size_t regex_error(int errcode, const regex_t *preg, char *errbuf, size_t errbuf_size)
 {
     return regerror(errcode, preg, errbuf, errbuf_size);

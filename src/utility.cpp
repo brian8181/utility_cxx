@@ -9,8 +9,11 @@
 #include <vector>
 #include <regex>
 #include <math.h>
+#include <stdio.h>
+#include <regex.h>
 #include <cstring>
 #include "utility.hpp"
+
 
 using std::regex;
 using std::string;
@@ -22,6 +25,27 @@ using std::pair;
 using std::ios;
 
 const int ASCII_OFFSET = 48;
+
+int regex_match(char * pattern, char* search, size_t n, regmatch_t* pmatch)
+{
+    // create regular expression
+    regex_t reegex;
+    if(regcomp( &reegex, pattern, 0))
+    {
+        return regexec( &reegex, search, n, pmatch, 0);
+    }
+}
+
+size_t regex_error(int errcode, const regex_t *preg, char *errbuf, size_t errbuf_size)
+{
+    return regerror(errcode, preg, errbuf, errbuf_size);
+}
+
+void regex_free(regex_t* preg)
+{
+    regfree(preg);
+}
+
 
 // returns true if only one match & match string size equals text size
 bool match_single(const string& pattern, const string& text, /* out */ smatch& match)
