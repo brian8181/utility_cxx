@@ -59,7 +59,7 @@ $(BLD)/libutility_cxx.so: $(LIB_SOURCES)
 	-chmod 755 $@
 
 $(BLD)/libutility_cxx.a: $(LIB_SOURCES)
-	-ar rvs $(BLD)/libutility_cxx.a $^
+	-ar rvs $@ $^
 	-chmod 755 $@
 
 $(OBJ)/utility_cxx.o: $(SRC)/utility_cxx.cpp

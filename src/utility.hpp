@@ -36,8 +36,7 @@ map<string, string>& get_name_value_pairs(string path, /* out */ map<string, str
 int digits10(int n);
 int atoi(const char* s);
 void itoa(int& n, char* s);
-
-# strings
+// strings
 string& to_lower(const string& s, /* out */ string& r);
 string& to_lower(string& s); // in place
 string& to_upper(const string& s, /* out */ string& r);
