@@ -65,7 +65,7 @@ $(BLD)/libutility_cxx.a: $(LIB_SOURCES)
 $(OBJ)/utility_cxx.o: $(SRC)/utility_cxx.cpp
 	$(CXX) $(CXXFLAGS) $(CXXEXTRA) -c $(SRC)/utility_cxx.cpp -o $(OBJ)/utility_cxx.o
 
-$(BLD)/utility_cxx_test: $(SRC)/utility_cxx_test.cpp
+$(BLD)/utility_cxx_test: $(SRC)/utility_cxx_test.cpp $(BLD)/libutility_cxx.a
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
 # copy header to build dir
